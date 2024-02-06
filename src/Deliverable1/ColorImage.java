@@ -26,17 +26,19 @@ public class ColorImage {
         return Arrays.copyOfRange(originalPixel, 0, 3);
     }
     public void reduceColor(int d){
-        int mask = (1 << d) - 1; // Create a mask to keep the d least significant bits
+        int mask = (1 << d) - 1;
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 int[] originalPixel = getPixel(i, j);
-                int newRed = originalPixel[0] >> (8 - d);
-                int newGreen = originalPixel[1] >> (8 - d);
-                int newBlue = originalPixel[2] >> (8 - d);
+                int newRed = originalPixel[0] >> (depth - d);
+                int newGreen = originalPixel[1] >> (depth - d);
+                int newBlue = originalPixel[2] >> (depth - d);
                 int[] reducedPixel = {newRed & mask, newGreen & mask, newBlue & mask};
                 pixels.setPixel(i, j, reducedPixel);
             }
         }
+        depth = d;
+
     }
 
 }
