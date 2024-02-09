@@ -44,7 +44,7 @@ public class ColorImage {
 	 */
     public int[] getPixel(int i, int j){
         int[] originalPixel = pixels.getPixel(i, j, (int[]) null);
-        return Arrays.copyOfRange(originalPixel, 0, 3);
+        return Arrays.copyOfRange(originalPixel, 0, 2);
     }
  
     /**

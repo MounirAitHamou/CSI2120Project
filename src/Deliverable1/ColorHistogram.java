@@ -8,15 +8,13 @@
 
 package Deliverable1;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.*;
 
 public class ColorHistogram {
 	// Instance Variables
 	private ColorImage image;
 	private int d_bit;
+	private int[] colors;
 	
 	// Constructors
 	public ColorHistogram(int d) {
@@ -24,8 +22,19 @@ public class ColorHistogram {
 		this.d_bit = d;
 	}
 	
-	public ColorHistogram(String filename) {
-		this.image = new ColorImage(filename);
+	public ColorHistogram(String fileName) {
+		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+			String line = br.readLine();
+			double temp = Math.pow(Double.parseDouble(line),1/3);
+			d_bit = (int)(Math.log(temp)/Math.log(2));
+			colors = new int[d_bit];
+			int[] temp2;
+			while ((line = br.readLine()) != null) {
+
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	// Methods
