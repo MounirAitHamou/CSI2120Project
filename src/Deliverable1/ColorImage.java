@@ -46,26 +46,25 @@ public class ColorImage {
         int[] originalPixel = pixels.getPixel(i, j, (int[]) null);
         return Arrays.copyOfRange(originalPixel, 0, 3);
     }
-    
+ 
     /**
    	 * Reduces the color space of each pixel to a d-bit representation
    	 * 
    	 * @param   d  the 'd'-bit representation to be changed to
    	 */
-    public void reduceColor(int d){
+    public void reduceColor(int d) {
         int mask = (1 << d) - 1;
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 int[] originalPixel = getPixel(i, j);
-                int newRed = originalPixel[0] >> (depth - d);
-                int newGreen = originalPixel[1] >> (depth - d);
-                int newBlue = originalPixel[2] >> (depth - d);
+                int newRed = originalPixel[0] >> (8 - d);
+                int newGreen = originalPixel[1] >> (8 - d);
+                int newBlue = originalPixel[2] >> (8 - d);
                 int[] reducedPixel = {newRed & mask, newGreen & mask, newBlue & mask};
                 pixels.setPixel(i, j, reducedPixel);
             }
         }
-        depth = d;
-
     }
+
 
 }
