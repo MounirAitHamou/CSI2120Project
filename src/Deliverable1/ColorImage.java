@@ -18,7 +18,7 @@ public class ColorImage {
     private int width;
     private int height;
     private int depth;
-    private WritableRaster pixels;
+    private int[][][] pixels;
     
     // Constructor
     public ColorImage(String fileName) {
@@ -27,7 +27,16 @@ public class ColorImage {
             width = image.getWidth();
             height = image.getHeight();
             depth = image.getColorModel().getPixelSize();
-            pixels = image.getRaster();
+            pixels = new int[width][height][3];
+            for(int i = 0; i < width; i++){
+                for(int j = 0; j < height; j++){
+                    int rgb = image.getRGB(i, j);
+                    pixels[i][j][0] = (rgb >> 16) & 0xFF;
+                    pixels[i][j][1] = (rgb >> 8) & 0xFF;
+                    pixels[i][j][2] = rgb & 0xFF;
+                }
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,8 +52,7 @@ public class ColorImage {
 	 * @returns    3-element array
 	 */
     public int[] getPixel(int i, int j){
-        int[] originalPixel = pixels.getPixel(i, j, (int[]) null);
-        return Arrays.copyOfRange(originalPixel, 0, 2);
+       return pixels[i][j];
     }
  
     /**
@@ -53,18 +61,16 @@ public class ColorImage {
    	 * @param   d  the 'd'-bit representation to be changed to
    	 */
     public void reduceColor(int d) {
-        int mask = (1 << d) - 1;
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                int[] originalPixel = getPixel(i, j);
-                int newRed = originalPixel[0] >> (8 - d);
-                int newGreen = originalPixel[1] >> (8 - d);
-                int newBlue = originalPixel[2] >> (8 - d);
-                int[] reducedPixel = {newRed & mask, newGreen & mask, newBlue & mask};
-                pixels.setPixel(i, j, reducedPixel);
+                pixels[i][j][0] = (pixels[i][j][0] >> (8 - d));
+                pixels[i][j][1] = (pixels[i][j][1] >> (8 - d));
+                pixels[i][j][2] = (pixels[i][j][2] >> (8 - d));
             }
         }
     }
 
-
+    public int[][][] getPixels() {
+        return pixels;
+    }
 }

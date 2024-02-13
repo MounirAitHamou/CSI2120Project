@@ -9,12 +9,16 @@
 package Deliverable1;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.awt.image.WritableRaster;
+
 
 public class ColorHistogram {
 	// Instance Variables
 	private ColorImage image;
 	private int d_bit;
-	private int[] colors;
+	private ArrayList<Integer> colors;
+	private int totalPixels;
 	
 	// Constructors
 	public ColorHistogram(int d) {
@@ -25,12 +29,18 @@ public class ColorHistogram {
 	public ColorHistogram(String fileName) {
 		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
 			String line = br.readLine();
-			double temp = Math.pow(Double.parseDouble(line),1/3);
+			double temp = Math.pow(Double.parseDouble(line),1.0/3.0);
 			d_bit = (int)(Math.log(temp)/Math.log(2));
-			colors = new int[d_bit];
-			int[] temp2;
+			colors = new ArrayList<>();
 			while ((line = br.readLine()) != null) {
-
+				String[] values = line.split(" ");
+				for (String value : values) {
+					totalPixels += Integer.parseInt(value);
+					colors.add(Integer.parseInt(value));
+				}
+			}
+			for (int i = 0; i < colors.size(); i++){
+				colors.set(i,(colors.get(i)/totalPixels));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -45,6 +55,9 @@ public class ColorHistogram {
 	 */
 	public void setImage(ColorImage image) {
 		this.image = image;
+		int[][][] pixels = image.getPixels();
+
+
 	}
 	
 	/**
