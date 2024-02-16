@@ -17,7 +17,7 @@ public class ColorHistogram {
 	// Instance Variables
 	private ColorImage image;
 	private int d_bit;
-	private ArrayList<Integer> colors;
+	private ArrayList<Double> colors;
 	private int totalPixels;
 	
 	// Constructors
@@ -36,7 +36,7 @@ public class ColorHistogram {
 				String[] values = line.split(" ");
 				for (String value : values) {
 					totalPixels += Integer.parseInt(value);
-					colors.add(Integer.parseInt(value));
+					colors.add(Double.parseDouble(value));
 				}
 			}
 			for (int i = 0; i < colors.size(); i++){
@@ -55,9 +55,26 @@ public class ColorHistogram {
 	 */
 	public void setImage(ColorImage image) {
 		this.image = image;
+		image.reduceColor(d_bit);
 		int[][][] pixels = image.getPixels();
-
-
+		int count = (int) Math.pow(Math.pow(2,d_bit),3);
+		colors = new ArrayList<>();
+		for (int i = 0; i < count; i++){
+			colors.add(0.0);
+		}
+		for(int i = 0; i < pixels.length; i++){
+			for(int j = 0; j < pixels[0].length; j++){
+				int index = 0;
+				for (int k = 0; k < 3; k++){
+					index += (pixels[i][j][k] >> (8-d_bit*k));
+				}
+				colors.set(index,colors.get(index)+1);
+			}
+		}
+		totalPixels = pixels.length*pixels[0].length;
+		for (int i = 0; i < colors.size(); i++){
+			colors.set(i,(colors.get(i)/totalPixels));
+		}
 	}
 	
 	/**
