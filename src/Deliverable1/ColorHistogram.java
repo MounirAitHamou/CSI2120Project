@@ -77,11 +77,12 @@ public class ColorHistogram {
 	 * 
 	 * @return      normalized image histogram
 	 */
-	public Double [] getHistogram() {
+	public double [] getHistogram() {
+		double[] histogram = new double[colors.size()];
 		for (int i = 0; i < colors.size(); i++){
-			colors.set(i,(colors.get(i)/totalPixels));
+			histogram[i] = colors.get(i)/totalPixels;
 		}
-		return colors.toArray(new Double[colors.size()]);
+		return histogram;
 	}
 	
 	/**
@@ -91,8 +92,13 @@ public class ColorHistogram {
 	 * @return		the intersection of hist and this instance's histogram
 	 */
 	public double compare(ColorHistogram hist) {
-
-		return 0;
+		double sum = 0;
+		double[] hist1 = getHistogram();
+		double[] hist2 = hist.getHistogram();
+		for (int i = 0; i < hist1.length; i++){
+			sum += Math.min(hist1[i], hist2[i]);
+		}
+		return sum;
 	}
 	
 	/**
@@ -124,21 +130,24 @@ public class ColorHistogram {
 		ColorImage image = new ColorImage("imageDataset2_15_20/25.jpg");
 		ColorHistogram hist = new ColorHistogram(3);
 		hist.setImage(image);
-		Double[] histogram = hist.getHistogram();
+		double[] histogram = hist.getHistogram();
 		double sum = 0;
 		for (int i = 0; i < histogram.length; i++){
 			System.out.println(histogram[i]);
 			sum += histogram[i];
 		}
 		System.out.println(sum);
+		ColorHistogram hist3 = new ColorHistogram(3);
+		hist3.setImage(image);
 		ColorHistogram hist2 = new ColorHistogram("imageDataset2_15_20/25.jpg.txt");
-		Double[] histogram2 = hist.getHistogram();
+		double[] histogram2 = hist.getHistogram();
 		sum = 0;
 		for (int j = 0; j < histogram.length; j++){
 			System.out.println(histogram[j]);
 			sum += histogram[j];
 		}
 		System.out.println(sum);
+		System.out.println(hist.compare(hist3));
 
 	}
 	public File readFile(String fileName) {
