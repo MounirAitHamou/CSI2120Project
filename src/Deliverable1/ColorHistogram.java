@@ -39,9 +39,6 @@ public class ColorHistogram {
 					colors.add(Double.parseDouble(value));
 				}
 			}
-			for (int i = 0; i < colors.size(); i++){
-				colors.set(i,(colors.get(i)/totalPixels));
-			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -73,9 +70,6 @@ public class ColorHistogram {
 			}
 		}
 		totalPixels = pixels.length*pixels[0].length;
-		for (int i = 0; i < colors.size(); i++){
-			colors.set(i,(colors.get(i)/totalPixels));
-		}
 	}
 	
 	/**
@@ -84,7 +78,9 @@ public class ColorHistogram {
 	 * @return      normalized image histogram
 	 */
 	public Double [] getHistogram() {
-		
+		for (int i = 0; i < colors.size(); i++){
+			colors.set(i,(colors.get(i)/totalPixels));
+		}
 		return colors.toArray(new Double[colors.size()]);
 	}
 	
