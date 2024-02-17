@@ -27,7 +27,7 @@ public class ColorHistogram {
 	}
 	
 	public ColorHistogram(String fileName) {
-		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(readFile(fileName)))) {
 			String line = br.readLine();
 			double temp = Math.pow(Double.parseDouble(line),1.0/3.0);
 			d_bit = (int)(Math.log(temp)/Math.log(2));
@@ -125,7 +125,7 @@ public class ColorHistogram {
 		
 	}
 	public static void main(String[] args) {
-		ColorImage image = new ColorImage("q00.jpg");
+		ColorImage image = new ColorImage("imageDataset2_15_20/25.jpg");
 		ColorHistogram hist = new ColorHistogram(3);
 		hist.setImage(image);
 		Double[] histogram = hist.getHistogram();
@@ -135,6 +135,19 @@ public class ColorHistogram {
 			sum += histogram[i];
 		}
 		System.out.println(sum);
+		ColorHistogram hist2 = new ColorHistogram("imageDataset2_15_20/25.jpg.txt");
+		Double[] histogram2 = hist.getHistogram();
+		sum = 0;
+		for (int j = 0; j < histogram.length; j++){
+			System.out.println(histogram[j]);
+			sum += histogram[j];
+		}
+		System.out.println(sum);
+
+	}
+	public File readFile(String fileName) {
+		File file = new File(getClass().getResource(fileName).getFile());
+		return file;
 	}
 
 }

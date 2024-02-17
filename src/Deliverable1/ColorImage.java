@@ -23,7 +23,7 @@ public class ColorImage {
     // Constructor
     public ColorImage(String fileName) {
         try{
-            BufferedImage image = ImageIO.read(new File(fileName));
+            BufferedImage image = ImageIO.read(readFile(fileName));
             width = image.getWidth();
             height = image.getHeight();
             depth = image.getColorModel().getPixelSize();
@@ -75,5 +75,9 @@ public class ColorImage {
     }
     public int getDepth() {
         return depth;
+    }
+    public File readFile(String fileName) {
+        File file = new File(getClass().getResource(fileName).getFile());
+        return file;
     }
 }

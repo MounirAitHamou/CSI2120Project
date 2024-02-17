@@ -7,6 +7,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src/Deliverable1/Resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/Deliverable1/Resources/imageDataset2_15_20" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/Deliverable1/Resources/queryImages" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Deliverable1/imageDataset2_15_20" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Deliverable1/queryImages" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/Resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/Resources/imageDataset2_15_20" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/Resources/queryImages" type="java-resource" />
