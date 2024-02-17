@@ -6,10 +6,11 @@
  * 
  */
 
-package main.Deliverable1;
+package Deliverable1;
 
 import java.io.*;
 import java.util.ArrayList;
+import Deliverable1.ColorImage;
 
 
 public class ColorHistogram {

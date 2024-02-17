@@ -6,7 +6,7 @@
  * 
  */
 
-package main.Deliverable1;
+package Deliverable1;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
