@@ -1,16 +1,15 @@
 /*
  * CSI 2120 - Programming Paradigms [A]
  * 
- * Mounir Aït Hamou  -  
+ * Mounir Aït Hamou  -  300296173
  * Aroha Upreti      -  300283790
  * 
  */
 
-package Deliverable1;
+package main.Deliverable1;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.awt.image.WritableRaster;
 
 
 public class ColorHistogram {
@@ -56,6 +55,7 @@ public class ColorHistogram {
 	public void setImage(ColorImage image) {
 		this.image = image;
 		image.reduceColor(d_bit);
+		System.out.println(d_bit);
 		int[][][] pixels = image.getPixels();
 		int count = (int) Math.pow(Math.pow(2,d_bit),3);
 		colors = new ArrayList<>();
@@ -66,7 +66,7 @@ public class ColorHistogram {
 			for(int j = 0; j < pixels[0].length; j++){
 				int index = 0;
 				for (int k = 0; k < 3; k++){
-					index += (pixels[i][j][k] >> (8-d_bit*k));
+					index += (pixels[i][j][k] << (d_bit*k));
 				}
 				colors.set(index,colors.get(index)+1);
 			}
@@ -82,9 +82,9 @@ public class ColorHistogram {
 	 * 
 	 * @return      normalized image histogram
 	 */
-	public double [] getHistogram() {
+	public Double [] getHistogram() {
 		
-		return null;
+		return colors.toArray(new Double[colors.size()]);
 	}
 	
 	/**
@@ -94,7 +94,7 @@ public class ColorHistogram {
 	 * @return		the intersection of hist and this instance's histogram
 	 */
 	public double compare(ColorHistogram hist) {
-		
+
 		return 0;
 	}
 	
@@ -122,6 +122,18 @@ public class ColorHistogram {
 			e.printStackTrace();
 		}
 		
+	}
+	public static void main(String[] args) {
+		ColorImage image = new ColorImage("q00.jpg");
+		ColorHistogram hist = new ColorHistogram(3);
+		hist.setImage(image);
+		Double[] histogram = hist.getHistogram();
+		double sum = 0;
+		for (int i = 0; i < histogram.length; i++){
+			System.out.println(histogram[i]);
+			sum += histogram[i];
+		}
+		System.out.println(sum);
 	}
 
 }

@@ -6,7 +6,7 @@
  * 
  */
 
-package Deliverable1;
+package main.Deliverable1;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
@@ -72,5 +72,8 @@ public class ColorImage {
 
     public int[][][] getPixels() {
         return pixels;
+    }
+    public int getDepth() {
+        return depth;
     }
 }
