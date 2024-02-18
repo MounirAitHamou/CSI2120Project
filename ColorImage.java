@@ -59,16 +59,14 @@ public class ColorImage {
      * @param d the 'd'-bit representation to be changed to
      */
     public void reduceColor(int d) {
-        if (depth != d) {
-            for (int i = 0; i < width; i++) {
-                for (int j = 0; j < height; j++) {
-                    pixels[i][j][0] = (pixels[i][j][0] >> (depth - d));
-                    pixels[i][j][1] = (pixels[i][j][1] >> (depth - d));
-                    pixels[i][j][2] = (pixels[i][j][2] >> (depth - d));
-                }
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                pixels[i][j][0] = (pixels[i][j][0] >> (depth - d));
+                pixels[i][j][1] = (pixels[i][j][1] >> (depth - d));
+                pixels[i][j][2] = (pixels[i][j][2] >> (depth - d));
             }
-            depth = d;
         }
+        depth = d;
 
     }
 

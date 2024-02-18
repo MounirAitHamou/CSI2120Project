@@ -30,6 +30,10 @@ public class SimilaritySearch {
 
 			}
 		}
+		ColorImage image = new ColorImage("imageDataset2_15_20/25.jpg");
+		ColorHistogram imageHist2 = new ColorHistogram(3);
+		imageHist2.setImage(image);
+		System.out.println(imageHist2.compare(new ColorHistogram("imageDataset2_15_20/25.jpg.txt")));
 
 		File[] imageDataset = new File(args[1]).listFiles();
 		PriorityQueue<Entry> pq = new PriorityQueue<>(5, new HistComparator(queryHist));
@@ -47,7 +51,7 @@ public class SimilaritySearch {
 		String result = "The 5 most similar images to " + args[0] + " are:";
 		while (!pq.isEmpty()) {
 			Entry entry = pq.poll();
-			result += "\n" + entry.getFilename();
+			result += "\n" + queryHist.compare(entry.getHistogram()) + " " + entry.getFilename();
 		}
 		System.out.println(result);
 	}

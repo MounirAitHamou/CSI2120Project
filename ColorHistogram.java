@@ -122,4 +122,17 @@ public class ColorHistogram {
 
 	}
 
+	public static void main(String[] args) {
+		ColorImage image = new ColorImage("imageDataset2_15_20/25.jpg");
+		ColorHistogram imageHist = new ColorHistogram(3);
+		imageHist.setImage(image);
+		System.out.println(imageHist.compare(new ColorHistogram("imageDataset2_15_20/25.jpg.txt")));
+		double[] hist = imageHist.getHistogram();
+		double[] hist2 = new ColorHistogram("imageDataset2_15_20/25.jpg.txt").getHistogram();
+		for (int i = 0; i < hist.length; i++) {
+			if (hist[i] != hist2[i])
+				System.out.println(hist[i] + " " + hist2[i]);
+		}
+	}
+
 }
