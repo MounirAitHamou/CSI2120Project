@@ -6,12 +6,9 @@
  * 
  */
 
-package Deliverable1;
-
 import java.io.*;
 import java.util.ArrayList;
-import Deliverable1.ColorImage;
-
+import java.util.Collections;
 
 public class ColorHistogram {
 	// Instance Variables
@@ -19,18 +16,18 @@ public class ColorHistogram {
 	private int d_bit;
 	private ArrayList<Double> colors;
 	private int totalPixels;
-	
+
 	// Constructors
 	public ColorHistogram(int d) {
 		this.image = null;
 		this.d_bit = d;
 	}
-	
+
 	public ColorHistogram(String fileName) {
-		try (BufferedReader br = new BufferedReader(new FileReader(readFile(fileName)))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
 			String line = br.readLine();
-			double temp = Math.pow(Double.parseDouble(line),1.0/3.0);
-			d_bit = (int)(Math.log(temp)/Math.log(2));
+			double temp = Math.pow(Double.parseDouble(line), 1.0 / 3.0);
+			d_bit = (int) (Math.log(temp) / Math.log(2));
 			colors = new ArrayList<>();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(" ");
@@ -43,7 +40,7 @@ public class ColorHistogram {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// Methods
 	/**
 	 * Associates image with a histogram instance
@@ -53,106 +50,76 @@ public class ColorHistogram {
 	public void setImage(ColorImage image) {
 		this.image = image;
 		image.reduceColor(d_bit);
-		System.out.println(d_bit);
-		int[][][] pixels = image.getPixels();
-		int count = (int) Math.pow(Math.pow(2,d_bit),3);
-		colors = new ArrayList<>();
-		for (int i = 0; i < count; i++){
-			colors.add(0.0);
-		}
-		for(int i = 0; i < pixels.length; i++){
-			for(int j = 0; j < pixels[0].length; j++){
-				int index = 0;
-				for (int k = 0; k < 3; k++){
-					index += (pixels[i][j][k] << (d_bit*k));
+		int[][][] pixels = image.getAllPixels();
+		int count = (int) Math.pow(Math.pow(2, d_bit), 3);
+		colors = new ArrayList<>(Collections.nCopies(count, 0.0));
+		for (int i = 0; i < pixels.length; i++) {
+			for (int j = 0; j < pixels[0].length; j++) {
+				int index = (pixels[i][j][0] << (2 * d_bit)) + (pixels[i][j][1] << d_bit) + pixels[i][j][2];
+				if (index >= count) {
+					System.out.println(index);
 				}
-				colors.set(index,colors.get(index)+1);
+				colors.set(index, colors.get(index) + 1);
 			}
 		}
-		totalPixels = pixels.length*pixels[0].length;
+		totalPixels = pixels.length * pixels[0].length;
 	}
-	
+
 	/**
 	 * Computes normalized histogram of the image
 	 * 
-	 * @return      normalized image histogram
+	 * @return normalized image histogram
 	 */
-	public double [] getHistogram() {
+	public double[] getHistogram() {
 		double[] histogram = new double[colors.size()];
-		for (int i = 0; i < colors.size(); i++){
-			histogram[i] = colors.get(i)/totalPixels;
+
+		for (int i = 0; i < colors.size(); i++) {
+			histogram[i] = colors.get(i) / totalPixels;
 		}
+
 		return histogram;
 	}
-	
+
 	/**
 	 * Compare method that determines the intersection between two histograms
 	 * 
-	 * @param hist  the given histogram 
-	 * @return		the intersection of hist and this instance's histogram
+	 * @param hist the given histogram
+	 * @return the intersection of hist and this instance's histogram
 	 */
 	public double compare(ColorHistogram hist) {
 		double sum = 0;
 		double[] hist1 = getHistogram();
 		double[] hist2 = hist.getHistogram();
-		for (int i = 0; i < hist1.length; i++){
+		for (int i = 0; i < hist1.length; i++) {
 			sum += Math.min(hist1[i], hist2[i]);
 		}
 		return sum;
 	}
-	
+
 	/**
 	 * Saves the histogram into a text file
 	 * 
-	 * @param filename	file that is to be saved into
+	 * @param filename file that is to be saved into
 	 */
 	public void ColorHistogram(String filename) {
 		FileWriter file;
 		try {
 			file = new FileWriter(filename);
 			BufferedWriter bwrite = new BufferedWriter(file);
-			
+
 			System.out.println("Starting to write on file '" + filename + "'.");
-			
+
 			/*
 			 * Code goes here
 			 * bwrite.write("-----------------");
 			 */
-			
+
 			bwrite.close();
 			System.out.println("File Writing... Completed.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-	}
-	public static void main(String[] args) {
-		ColorImage image = new ColorImage("imageDataset2_15_20/25.jpg");
-		ColorHistogram hist = new ColorHistogram(3);
-		hist.setImage(image);
-		double[] histogram = hist.getHistogram();
-		double sum = 0;
-		for (int i = 0; i < histogram.length; i++){
-			System.out.println(histogram[i]);
-			sum += histogram[i];
-		}
-		System.out.println(sum);
-		ColorHistogram hist3 = new ColorHistogram(3);
-		hist3.setImage(image);
-		ColorHistogram hist2 = new ColorHistogram("imageDataset2_15_20/25.jpg.txt");
-		double[] histogram2 = hist.getHistogram();
-		sum = 0;
-		for (int j = 0; j < histogram.length; j++){
-			System.out.println(histogram[j]);
-			sum += histogram[j];
-		}
-		System.out.println(sum);
-		System.out.println(hist.compare(hist3));
 
-	}
-	public File readFile(String fileName) {
-		File file = new File(getClass().getResource(fileName).getFile());
-		return file;
 	}
 
 }
