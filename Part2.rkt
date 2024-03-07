@@ -58,8 +58,8 @@
  #    string queryHistogramFilename - the query to be compared with
  #    string imageDataSetDirectory - the directory containing the images to be compared
 |# 
-(define (similaritySearch queryHistogramFilename imageDatasetDirectory)
-
+(define (similaritySearch queryImageName imageDatasetDirectory)
+  (define queryHistogramFilename (string-append "queryImages\\" queryImageName ".txt"))
   (define queryHistogram (hist->list queryHistogramFilename))
   
   
@@ -88,4 +88,4 @@
     (map min-element hist1 hist2))
   
   (apply + similarities))
-(similaritySearch "imageDataset2_15_20\\25.jpg.txt" "imageDataset2_15_20")
+(similaritySearch "q00" "imageDataset2_15_20")
