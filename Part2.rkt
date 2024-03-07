@@ -101,7 +101,7 @@
         (display ", Similarity of ")
         (display similarity)
         (newline)
-        (print-entry (cdr entry) (add1 counter)))))
+        (print-entry (cdr entry) (+ counter 1)))))
   
   (print-entry L 1))
 (similaritySearch "q00" "imageDataset2_15_20")
