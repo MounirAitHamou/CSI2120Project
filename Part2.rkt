@@ -59,26 +59,26 @@
  #    string imageDataSetDirectory - the directory containing the images to be compared
 |# 
 (define (similaritySearch queryHistogramFilename imageDatasetDirectory)
-  ;; Read the query histogram
+
   (define queryHistogram (hist->list queryHistogramFilename))
   
-  ;; Normalize the query histogram
+  
   (define normalizedQueryHistogram (normalize-histogram queryHistogram))
   
-  ;; Read histograms from all files in the image dataset directory
+  
   (define datasetHistograms (get-all-files imageDatasetDirectory))
   
-  ;; Calculate similarities between query histogram and dataset histograms
+  
   (define similarities
     (map (lambda (fileInfo)
-           (list (car fileInfo) ; File path
-                 (compute-similarity normalizedQueryHistogram (cadr fileInfo)))) ; Similarity
+           (list (car fileInfo)
+                 (compute-similarity normalizedQueryHistogram (cadr fileInfo))))
          datasetHistograms))
   
-  ;; Sort similarities based on similarity values
+  
   (define sortedSimilarities (sort similarities (lambda (a b) (> (cadr a) (cadr b)))))
 
-  ;; Return the top 5 most similar images
+
   (take sortedSimilarities 5))
 (define (compute-similarity hist1 hist2)
   (define (min-element x y)
