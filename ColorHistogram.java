@@ -7,6 +7,7 @@
  */
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -32,7 +33,7 @@ public class ColorHistogram {
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(" ");
 				for (String value : values) {
-					totalPixels += Integer.parseInt(value);
+					totalPixels += Double.parseDouble(value);
 					colors.add(Double.parseDouble(value));
 				}
 			}
@@ -77,6 +78,15 @@ public class ColorHistogram {
 		return histogram;
 	}
 
+	public double[] getUnnormalizedHistogram() {
+		double[] histogram = new double[colors.size()];
+
+		for (int i = 0; i < colors.size(); i++) {
+			histogram[i] = colors.get(i);
+		}
+		return histogram;
+	}
+
 	/**
 	 * Compare method that determines the intersection between two histograms
 	 * 
@@ -99,10 +109,10 @@ public class ColorHistogram {
 	 * @param filename file that is to be saved into
 	 */
 	public void ColorHistogram(String filename) {
-		try (FileWriter file = new FileWriter(filename)) {
+		try (FileWriter file = new FileWriter(filename, StandardCharsets.UTF_8)) {
 			BufferedWriter bwrite = new BufferedWriter(file);
 			bwrite.write(Math.pow(2, d_bit * 3) + "\n");
-			double[] histogram = getHistogram();
+			double[] histogram = getUnnormalizedHistogram();
 			for (double value : histogram) {
 				bwrite.write(value + " ");
 			}
@@ -111,7 +121,30 @@ public class ColorHistogram {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
+	public static void main(String[] args) {
+		/*
+		 * File directory = new
+		 * File("C:\\GitHub\\Projects\\CSI2120Project\\queryImages");
+		 * File queryImage = new
+		 * File("C:\\GitHub\\Projects\\CSI2120Project\\queryImages\\q00.jpg");
+		 * ColorImage image = new ColorImage(queryImage.getAbsolutePath());
+		 * ColorHistogram colorHistogram = new ColorHistogram(3);
+		 * colorHistogram.setImage(image);
+		 * double[] histogram = colorHistogram.getUnnormalizedHistogram();
+		 * for (double value : histogram) {
+		 * System.out.print(value + " ");
+		 * }
+		 * colorHistogram.ColorHistogram(directory.getAbsolutePath() + File.separator +
+		 * "q00.txt");
+		 */
+		ColorHistogram colorHistogram = new ColorHistogram(
+				"C:\\GitHub\\Projects\\CSI2120Project\\queryImages\\q00.txt");
+		double[] histogram = colorHistogram.getUnnormalizedHistogram();
+		for (double value : histogram) {
+			System.out.print(value + " ");
+		}
+
+	}
 }
