@@ -79,7 +79,7 @@
   (define sortedSimilarities (sort similarities (lambda (a b) (> (cadr a) (cadr b)))))
 
 
-  (take sortedSimilarities 5))
+  (clean-output (take sortedSimilarities 5)))
 (define (compute-similarity hist1 hist2)
   (define (min-element x y)
     (if (< x y) x y))
@@ -88,4 +88,20 @@
     (map min-element hist1 hist2))
   
   (apply + similarities))
+(define (clean-output L)
+  (displayln "5 closest images:")
+  (define (print-entry entry counter)
+    (when (not (null? entry))
+      (let ((filename (car entry))
+            (similarity (cadr (car entry))))
+        (display counter)
+        (display ". ")
+        (let ((picture-number (substring (car filename) 20 (- (string-length (car filename)) 8))))
+          (display picture-number))
+        (display ", Similarity of ")
+        (display similarity)
+        (newline)
+        (print-entry (cdr entry) (add1 counter)))))
+  
+  (print-entry L 1))
 (similaritySearch "q00" "imageDataset2_15_20")
